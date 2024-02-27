@@ -1,0 +1,12 @@
+Folder.GetSpecialFolder SpecialFolder: Folder.SpecialFolder.DesktopDirectory SpecialFolderPath=> SpecialFolderPath
+# Launch Excel open following document
+Excel.LaunchExcel.LaunchAndOpenUnderExistingProcess Path: $'''%SpecialFolderPath%\\Excel Automation (Launch, Read, Close).xlsx''' Visible: True ReadOnly: False Instance=> ExcelInstance
+# Practice 1 : Toggle on/off First line of range contains column names, run and see result in text file
+# Practice 2 : Edit Excel range more flexible
+Excel.ReadFromExcel.ReadCells Instance: ExcelInstance StartColumn: $'''A''' StartRow: 1 EndColumn: $'''D''' EndRow: 11 ReadAsText: False FirstLineIsHeader: False RangeValue=> ExcelData
+# Result in text file will show/not show column header as per toggle on/off
+File.WriteText File: $'''%SpecialFolderPath%\\ReadExcel.txt''' TextToWrite: ExcelData AppendNewLine: True IfFileExists: File.IfFileExists.Overwrite Encoding: File.FileEncoding.Unicode
+# Close Excel (Do not save)
+Excel.CloseExcel.Close Instance: ExcelInstance
+Display.ShowMessageDialog.ShowMessage Title: $'''RPA run successfully''' Message: $'''Please check data file path 
+%SpecialFolderPath%\\ReadExcel.txt''' Icon: Display.Icon.Information Buttons: Display.Buttons.OK DefaultButton: Display.DefaultButton.Button1 IsTopMost: False ButtonPressed=> ButtonPressed
