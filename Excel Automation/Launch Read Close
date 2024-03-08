@@ -9,4 +9,4 @@ File.WriteText File: $'''%SpecialFolderPath%\\ReadExcel.txt''' TextToWrite: Exce
 # Close Excel (Do not save)
 Excel.CloseExcel.Close Instance: ExcelInstance
 Display.ShowMessageDialog.ShowMessage Title: $'''RPA run successfully''' Message: $'''Please check data file path 
-%SpecialFolderPath%\\ReadExcel.txt''' Icon: Display.Icon.Information Buttons: Display.Buttons.OK DefaultButton: Display.DefaultButton.Button1 IsTopMost: False ButtonPressed=> ButtonPressed
+%SpecialFolderPath%\\StrawHatCrew.txt''' Icon: Display.Icon.Information Buttons: Display.Buttons.OK DefaultButton: Display.DefaultButton.Button1 IsTopMost: False ButtonPressed=> ButtonPressed
