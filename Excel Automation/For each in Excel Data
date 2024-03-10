@@ -1,0 +1,11 @@
+Folder.GetSpecialFolder SpecialFolder: Folder.SpecialFolder.DesktopDirectory SpecialFolderPath=> SpecialFolderPath
+# http://penbotrpa.com/2024/03/04/read-from-excel-worksheet-power-automate-desktop/
+Excel.LaunchExcel.LaunchAndOpenUnderExistingProcess Path: $'''%SpecialFolderPath%\\Excel Automation (Launch, Read, Close).xlsx''' Visible: True ReadOnly: False Instance=> ExcelInstance
+Excel.GetFirstFreeColumnRow Instance: ExcelInstance FirstFreeColumn=> FirstFreeColumn FirstFreeRow=> FirstFreeRow
+Excel.ReadFromExcel.ReadCells Instance: ExcelInstance StartColumn: $'''A''' StartRow: 1 EndColumn: $'''D''' EndRow: FirstFreeRow - 1 ReadAsText: False FirstLineIsHeader: True RangeValue=> ExcelData
+Excel.CloseExcel.Close Instance: ExcelInstance
+# Retrieve data row use %VariableName['ColumnName']% or %VariableName[ItemNumber]%
+LOOP FOREACH CurrentItem IN ExcelData
+    Display.ShowMessageDialog.ShowMessage Title: $'''For each in \"Name\" column''' Message: $'''ColumnName = 
+ItemNumber = ''' Icon: Display.Icon.None Buttons: Display.Buttons.OK DefaultButton: Display.DefaultButton.Button1 IsTopMost: False ButtonPressed=> ButtonPressed
+END
