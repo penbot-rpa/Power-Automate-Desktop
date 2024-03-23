@@ -1,0 +1,8 @@
+Folder.GetSpecialFolder SpecialFolder: Folder.SpecialFolder.DesktopDirectory SpecialFolderPath=> SpecialFolderPath
+Text.Replace Text: SpecialFolderPath TextToFind: $'''Desktop''' IsRegEx: False IgnoreCase: False ReplaceWith: $'''Downloads''' ActivateEscapeSequences: False Result=> DownloadsPath
+Folder.GetFiles Folder: DownloadsPath FileFilter: $'''*''' IncludeSubfolders: False FailOnAccessDenied: True SortBy1: Folder.SortBy.CreationTime SortDescending1: True SortBy2: Folder.SortBy.NoSort SortDescending2: False SortBy3: Folder.SortBy.NoSort SortDescending3: False Files=> Files
+SET YourDestinationPath TO $'''<your specific folder path>'''
+DateTime.GetCurrentDateTime.Local DateTimeFormat: DateTime.DateTimeFormat.DateAndTime CurrentDateTime=> CurrentDateTime
+Text.ConvertDateTimeToText.FromCustomDateTime DateTime: CurrentDateTime CustomFormat: $'''yyyy-MM-dd-hhmmsstt''' Result=> FormattedDateTime
+File.RenameFiles.RenameAddText Files: Files[0] TextToAdd: $'''_%FormattedDateTime%''' TextPosition: File.AddTextPosition.AfterName IfFileExists: File.IfExists.DoNothing RenamedFiles=> RenamedFiles
+File.Move Files: RenamedFiles[0].Fullname Destination: YourDestinationPath IfFileExists: File.IfExists.DoNothing MovedFiles=> MovedFiles

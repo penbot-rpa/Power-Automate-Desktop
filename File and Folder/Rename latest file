@@ -1,3 +1,0 @@
-Folder.GetFiles Folder: $'''<your folder path>''' FileFilter: $'''*''' IncludeSubfolders: False FailOnAccessDenied: True SortBy1: Folder.SortBy.CreationTime SortDescending1: True SortBy2: Folder.SortBy.NoSort SortDescending2: False SortBy3: Folder.SortBy.NoSort SortDescending3: False Files=> Files
-Display.ShowMessageDialog.ShowMessage Title: $'''Latest File''' Message: Files[0] Icon: Display.Icon.None Buttons: Display.Buttons.OK DefaultButton: Display.DefaultButton.Button1 IsTopMost: False
-File.RenameFiles.RenameAddText Files: Files[0] TextToAdd: $'''_Newest''' TextPosition: File.AddTextPosition.AfterName IfFileExists: File.IfExists.DoNothing RenamedFiles=> RenamedFiles
