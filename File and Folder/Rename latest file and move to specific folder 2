@@ -1,0 +1,11 @@
+# Get path of the Desktop folder, Replace Desktop with Downloads (Get special folder path don't have Downloads folder)
+Folder.GetSpecialFolder SpecialFolder: Folder.SpecialFolder.DesktopDirectory SpecialFolderPath=> SpecialFolderPath
+Text.Replace Text: SpecialFolderPath TextToFind: $'''Desktop''' IsRegEx: False IgnoreCase: False ReplaceWith: $'''Downloads''' ActivateEscapeSequences: False Result=> DownloadsPath
+# Input your destination foder:
+SET YourDestinationPath TO $'''<your destination path>'''
+Folder.GetFiles Folder: DownloadsPath FileFilter: $'''*''' IncludeSubfolders: False FailOnAccessDenied: True SortBy1: Folder.SortBy.CreationTime SortDescending1: True SortBy2: Folder.SortBy.NoSort SortDescending2: False SortBy3: Folder.SortBy.NoSort SortDescending3: False Files=> Files
+DISABLE Display.ShowMessageDialog.ShowMessage Title: $'''Latest File (Index 0)''' Message: Files[0] Icon: Display.Icon.None Buttons: Display.Buttons.OK DefaultButton: Display.DefaultButton.Button1 IsTopMost: False
+DateTime.GetCurrentDateTime.Local DateTimeFormat: DateTime.DateTimeFormat.DateAndTime CurrentDateTime=> CurrentDateTime
+File.RenameFiles.RenameAddCustomDateTime Files: Files[0] CustomDateTime: CurrentDateTime DateTimePosition: File.AddTextPosition.AfterName DateTimeSeparator: File.Separator.Underscore DateTimeFormat: $'''yyyy-MM-dd_hhmmsstt''' IfFileExists: File.IfExists.DoNothing RenamedFiles=> RenamedFiles
+DISABLE Display.ShowMessageDialog.ShowMessage Title: $'''Latest File Rename''' Message: RenamedFiles[0].Name Icon: Display.Icon.None Buttons: Display.Buttons.OK DefaultButton: Display.DefaultButton.Button1 IsTopMost: False
+File.Move Files: RenamedFiles[0].Fullname Destination: YourDestinationPath IfFileExists: File.IfExists.DoNothing MovedFiles=> MovedFiles
