@@ -1,1 +1,13 @@
-
+Folder.GetSpecialFolder SpecialFolder: Folder.SpecialFolder.DesktopDirectory SpecialFolderPath=> SpecialFolderPath
+SET Excel_File_Path TO $'''%SpecialFolderPath%\\TestCountCondition.xlsx'''
+Database.Connect ConnectionString: $'''Provider=Microsoft.ACE.OLEDB.12.0;Data Source=%Excel_File_Path%;Extended Properties=\"Excel 12.0 Xml;HDR=YES\";''' Connection=> SQLConnection
+@@copilotGeneratedAction: 'False'
+Database.ExecuteSqlStatement.Execute Connection: SQLConnection Statement: $'''SELECT *
+FROM [Sheet1$]''' Timeout: 30 Result=> QueryResult
+@@copilotGeneratedAction: 'False'
+Database.ExecuteSqlStatement.Execute Connection: SQLConnection Statement: $'''SELECT
+    gender,
+    COUNT(id) AS id_count
+FROM [Sheet1$]
+GROUP BY gender''' Timeout: 30 Result=> QueryResult2
+Database.Close Connection: SQLConnection
