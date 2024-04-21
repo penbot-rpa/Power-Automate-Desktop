@@ -1,9 +1,11 @@
 Folder.GetSpecialFolder SpecialFolder: Folder.SpecialFolder.DesktopDirectory SpecialFolderPath=> SpecialFolderPath
 SET Excel_File_Path TO $'''%SpecialFolderPath%\\TestCountCondition.xlsx'''
 Database.Connect ConnectionString: $'''Provider=Microsoft.ACE.OLEDB.12.0;Data Source=%Excel_File_Path%;Extended Properties=\"Excel 12.0 Xml;HDR=YES\";''' Connection=> SQLConnection
+# Select All Column in Table Sheet1 (Example: Basic SQL), this action can disable
 @@copilotGeneratedAction: 'False'
-Database.ExecuteSqlStatement.Execute Connection: SQLConnection Statement: $'''SELECT *
+DISABLE Database.ExecuteSqlStatement.Execute Connection: SQLConnection Statement: $'''SELECT *
 FROM [Sheet1$]''' Timeout: 30 Result=> QueryResult
+# SQL COUNT() WITH GROUP BY
 @@copilotGeneratedAction: 'False'
 Database.ExecuteSqlStatement.Execute Connection: SQLConnection Statement: $'''SELECT
     gender,
