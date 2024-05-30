@@ -1,0 +1,12 @@
+# This flow will launch website https://th.wikipedia.org/ภาษาไทย
+# Use authority as Initial URL >> th.wikipedia.org/wiki/ภาษาไทย
+WebAutomation.LaunchChrome.LaunchChrome Url: $'''th.wikipedia.org/wiki/ภาษาไทย''' WindowState: WebAutomation.BrowserWindowState.Normal ClearCache: False ClearCookies: False WaitForPageToLoadTimeout: 60 Timeout: 60 BrowserInstance=> Browser1
+/# Partial copy scheme, subdomain and domain, then copy path, and combine it together as Initial URL
+1st time copy scheme, subdomain and domain>> https://th.wikipedia.org/wiki/
+2nd time copy path >> ภาษาไทย#/
+WebAutomation.LaunchChrome.LaunchChrome Url: $'''https://th.wikipedia.org/wiki/ภาษาไทย''' WindowState: WebAutomation.BrowserWindowState.Normal ClearCache: False ClearCookies: False WaitForPageToLoadTimeout: 60 Timeout: 60 BrowserInstance=> Browser2
+# Hardcoded values
+SET HardcodeURL TO $'''%'https://th.wikipedia.org/wiki/%E0%B8%A0%E0%B8%B2%E0%B8%A9%E0%B8%B2%E0%B9%84%E0%B8%97%E0%B8%A2'%'''
+WebAutomation.LaunchChrome.LaunchChrome Url: HardcodeURL WindowState: WebAutomation.BrowserWindowState.Normal ClearCache: False ClearCookies: False WaitForPageToLoadTimeout: 60 Timeout: 60 BrowserInstance=> Browser3
+# Escaped using another percentage character (%%)
+WebAutomation.LaunchChrome.LaunchChrome Url: $'''https://th.wikipedia.org/wiki/%%E0%%B8%%A0%%E0%%B8%%B2%%E0%%B8%%A9%%E0%%B8%%B2%%E0%%B9%%84%%E0%%B8%%97%%E0%%B8%%A2''' WindowState: WebAutomation.BrowserWindowState.Normal ClearCache: False ClearCookies: False WaitForPageToLoadTimeout: 60 Timeout: 60 BrowserInstance=> Browser4
