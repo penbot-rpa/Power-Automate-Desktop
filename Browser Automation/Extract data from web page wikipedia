@@ -1,0 +1,12 @@
+WebAutomation.LaunchChrome.LaunchChrome Url: $'''https://en.wikipedia.org/wiki/List_of_most-watched_Netflix_original_programming''' WindowState: WebAutomation.BrowserWindowState.Normal ClearCache: False ClearCookies: False WaitForPageToLoadTimeout: 60 Timeout: 60 BrowserInstance=> Browser
+# Extract entire table from table Most popular television series by hours watched in their first 28 days.
+WebAutomation.ExtractData.ExtractHtmlTable BrowserInstance: Browser Control: $'''html > body > div:eq(1) > div > div:eq(2) > main > div:eq(2) > div:eq(2) > div:eq(0) > table:eq(0)''' ExtractionParameters: {[$'''#
+''', $'''Title
+''', $'''Season
+''', $'''Genre
+''', $'''Release date
+''', $'''Hours watched(millions)
+'''], [$'''''', $'''''', $'''''', $'''''', $'''''', $''''''] } PostProcessData: False TimeoutInSeconds: 60 ExtractedData=> DataFromWebPage
+# Extract 2 columns from table Most popular films by hours watched in their first 28 days.
+WebAutomation.ExtractData.ExtractTable BrowserInstance: Browser Control: $'''html > body > div:eq(1) > div > div:eq(2) > main > div:eq(2) > div:eq(2) > div:eq(0) > table:eq(1) > tbody > tr''' ExtractionParameters: {[$'''td:eq(0)''', $'''Own Text''', $'''''', $'''Value #1'''], [$'''td:eq(3)''', $'''Own Text''', $'''''', $'''Value #2'''] } PostProcessData: False TimeoutInSeconds: 60 ExtractedData=> DataFromWebPage2col
+Display.ShowMessageDialog.ShowMessage Title: $'''Run Finished!!''' Message: $'''Please double-check the data on the website and compare it with the variable.''' Icon: Display.Icon.None Buttons: Display.Buttons.OK DefaultButton: Display.DefaultButton.Button1 IsTopMost: False ButtonPressed=> ButtonPressed
