@@ -4,4 +4,4 @@ DateTime.GetCurrentDateTime.Local DateTimeFormat: DateTime.DateTimeFormat.DateAn
 Scripting.RunPythonScript PythonCode: $'''import datetime
 week = datetime.date(%CurrentDateTime.Year%, %CurrentDateTime.Month%, %CurrentDateTime.Day%).isocalendar()[1]
 print(week)''' PythonVersion: System.PythonVersion.Python2 ScriptOutput=> PythonScriptOutputWeekNum
-Display.ShowMessageDialog.ShowMessage Title: $'''Week Number''' Message: $'''Week Number = %PythonScriptOutputWeekNum%''' Icon: Display.Icon.None Buttons: Display.Buttons.OK DefaultButton: Display.DefaultButton.Button1 IsTopMost: False ButtonPressed=> ButtonPressed
+Display.ShowMessageDialog.ShowMessageWithTimeout Title: $'''Week Number''' Message: $'''Week Number = %PythonScriptOutputWeekNum%''' Icon: Display.Icon.None Buttons: Display.Buttons.OK DefaultButton: Display.DefaultButton.Button1 IsTopMost: False Timeout: 2
