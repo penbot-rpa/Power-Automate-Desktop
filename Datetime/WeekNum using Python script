@@ -1,0 +1,7 @@
+DateTime.GetCurrentDateTime.Local DateTimeFormat: DateTime.DateTimeFormat.DateAndTime CurrentDateTime=> CurrentDateTime
+# Please note that this week numbering system follows the ISO week date standard (ISO 8601), which considers the week to start on Monday and end on Sunday.
+@@copilotGeneratedAction: 'False'
+Scripting.RunPythonScript PythonCode: $'''import datetime
+week = datetime.date(%CurrentDateTime.Year%, %CurrentDateTime.Month%, %CurrentDateTime.Day%).isocalendar()[1]
+print(week)''' PythonVersion: System.PythonVersion.Python2 ScriptOutput=> PythonScriptOutputWeekNum
+Display.ShowMessageDialog.ShowMessage Title: $'''Week Number''' Message: $'''Week Number = %PythonScriptOutputWeekNum%''' Icon: Display.Icon.None Buttons: Display.Buttons.OK DefaultButton: Display.DefaultButton.Button1 IsTopMost: False ButtonPressed=> ButtonPressed
