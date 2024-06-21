@@ -1,1 +1,6 @@
-
+Excel.LaunchExcel.LaunchUnderExistingProcess Visible: True Instance=> ExcelInstance
+Excel.WriteToExcel.WriteCell Instance: ExcelInstance Value: $'''=TODAY()''' Column: $'''A''' Row: 1
+Excel.WriteToExcel.WriteCell Instance: ExcelInstance Value: $'''=WEEKNUM(A1,2)''' Column: $'''B''' Row: 1
+Excel.ReadFromExcel.ReadCell Instance: ExcelInstance StartColumn: $'''B''' StartRow: 1 ReadAsText: False CellValue=> WeekNum
+Excel.CloseExcel.Close Instance: ExcelInstance
+Display.ShowMessageDialog.ShowMessageWithTimeout Title: $'''WeekNum''' Message: $'''Week number = %WeekNum%''' Icon: Display.Icon.None Buttons: Display.Buttons.OK DefaultButton: Display.DefaultButton.Button1 IsTopMost: False Timeout: 2
