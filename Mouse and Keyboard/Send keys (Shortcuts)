@@ -1,0 +1,7 @@
+System.RunApplication.RunApplication ApplicationPath: $'''notepad.exe''' WindowStyle: System.ProcessWindowStyle.Normal ProcessId=> AppProcessId
+# Text
+MouseAndKeyboard.SendKeys.FocusAndSendKeys TextToSend: $'''Test shortcut''' DelayBetweenKeystrokes: 10 SendTextAsHardwareKeys: False
+# Select All (Ctrl+A)
+MouseAndKeyboard.SendKeys.FocusAndSendKeys TextToSend: $'''{Control}({A})''' DelayBetweenKeystrokes: 10 SendTextAsHardwareKeys: False
+# New windows (Ctrl+Shift+N)
+MouseAndKeyboard.SendKeys.FocusAndSendKeys TextToSend: $'''{Control}({Shift}({N}))''' DelayBetweenKeystrokes: 10 SendTextAsHardwareKeys: False
