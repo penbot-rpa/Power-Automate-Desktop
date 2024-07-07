@@ -1,0 +1,12 @@
+System.RunApplication.RunApplication ApplicationPath: $'''notepad.exe''' WindowStyle: System.ProcessWindowStyle.Normal ProcessId=> AppProcessId
+# Input as text, variable or expression
+MouseAndKeyboard.SendKeys.FocusAndSendKeys TextToSend: $'''This is Text{Return}''' DelayBetweenKeystrokes: 10 SendTextAsHardwareKeys: False
+MouseAndKeyboard.SendKeys.FocusAndSendKeys TextToSend: $'''This is variable AppProcessId %AppProcessId%{Return}''' DelayBetweenKeystrokes: 10 SendTextAsHardwareKeys: False
+MouseAndKeyboard.SendKeys.FocusAndSendKeys TextToSend: $'''This is Expression %AppProcessId + 1%{Return}''' DelayBetweenKeystrokes: 10 SendTextAsHardwareKeys: False
+/# Direct encrypted text input (This encrypted text can only work on the current machine (machine-based). 
+If the flow is opened on another machine, these inputs will be invalid.)#/
+MouseAndKeyboard.SendKeys.FocusAndSendKeys TextToSend: P'AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAA0pW3a5lWo0mGWcCktIwBrQQAAAACAAAAAAAQZgAAAAEAACAAAADENNWfI5XK2b/FG0HI/jhachMQDkc7QtoXQYh518a31wAAAAAOgAAAAAIAACAAAAASH9RYPdAiJwm/UB8AAKOWfFQcGK3G45DnNaZ93RcTzRAAAAB97czXZiDS5u8KocRFlLIdQAAAANmeKYn7D2s9X4x04tsiwRhOF/1eN3ng2ZARAkuvR9klnlYyQ8ZPCpVjOUf0kEqh08KkjbnuK4SvBXGyFKiNBxM=' DelayBetweenKeystrokes: 10 SendTextAsHardwareKeys: False
+# Insert special keys
+MouseAndKeyboard.SendKeys.FocusAndSendKeys TextToSend: $'''{Return}''' DelayBetweenKeystrokes: 10 SendTextAsHardwareKeys: False
+# Insert modifier
+MouseAndKeyboard.SendKeys.FocusAndSendKeys TextToSend: $'''{Control}({A})''' DelayBetweenKeystrokes: 10 SendTextAsHardwareKeys: False
