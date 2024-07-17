@@ -1,0 +1,1 @@
+SAP.SapLogin.SapLogInOptionTerminate Description: $'''<youe serverdescription>''' Client: $'''<your client>''' Username: $'''<your username>''' Password: $'''<your password; you can use direct input or variable>''' Language: $'''EN''' SapInstance=> SapInstance CurrentSapLoginTerminated=> CurrentSapLoginTerminated
