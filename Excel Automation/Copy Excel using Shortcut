@@ -1,0 +1,33 @@
+Folder.GetFiles Folder: $'''D:\\01 PenBot\\Sample File\\ManyExcelFile\\FileFromA''' FileFilter: $'''*''' IncludeSubfolders: False FailOnAccessDenied: True SortBy1: Folder.SortBy.LastModified SortDescending1: True SortBy2: Folder.SortBy.NoSort SortDescending2: False SortBy3: Folder.SortBy.NoSort SortDescending3: False Files=> Files
+SET Latest_File TO Files[0]
+Excel.LaunchExcel.LaunchAndOpenUnderExistingProcess Path: Latest_File Visible: True ReadOnly: False Instance=> ExcelInstant_Datasource
+Excel.GetFirstFreeColumnRow Instance: ExcelInstant_Datasource FirstFreeRow=> FirstFreeRow_DataSource
+Excel.SetActiveWorksheet.ActivateWorksheetByName Instance: ExcelInstant_Datasource Name: $'''ExampleA'''
+Excel.ReadFromExcel.ReadCells Instance: ExcelInstant_Datasource StartColumn: $'''A''' StartRow: 2 EndColumn: $'''A''' EndRow: FirstFreeRow_DataSource - 1 ReadAsText: False FirstLineIsHeader: True RangeValue=> CompanyCode
+Excel.ReadFromExcel.ReadCells Instance: ExcelInstant_Datasource StartColumn: $'''B''' StartRow: 2 EndColumn: $'''B''' EndRow: FirstFreeRow_DataSource - 1 ReadAsText: False FirstLineIsHeader: True RangeValue=> RandomNo
+Excel.LaunchExcel.LaunchAndOpenUnderExistingProcess Path: $'''D:\\01 PenBot\\Sample File\\ManyExcelFile\\TemplateForm\\NewTemplate.xlsx''' Visible: True ReadOnly: False Instance=> ExcelInstant_Form
+SET ExcelRow_Form TO 2
+Excel.GetFirstFreeColumnRow Instance: ExcelInstant_Form FirstFreeRow=> Form_FirstFreeRow
+Excel.WriteToExcel.WriteCell Instance: ExcelInstant_Form Value: CompanyCode Column: $'''B''' Row: Form_FirstFreeRow
+Excel.WriteToExcel.WriteCell Instance: ExcelInstant_Form Value: RandomNo Column: $'''A''' Row: Form_FirstFreeRow
+Excel.ReadFromExcel.ReadCell Instance: ExcelInstant_Form StartColumn: $'''A''' StartRow: ExcelRow_Form ReadAsText: False CellValue=> RandomNo_New
+Excel.ReadFromExcel.ReadCell Instance: ExcelInstant_Form StartColumn: $'''B''' StartRow: ExcelRow_Form ReadAsText: False CellValue=> CompanyCode_New
+# Write fx, copy, select range and paste
+**REGION Employee Number
+Excel.WriteToExcel.WriteCell Instance: ExcelInstant_Form Value: $'''=TEXT(B%ExcelRow_Form%,\"0000\")&\"-\"&TEXT(A%ExcelRow_Form%,\"00000\")''' Column: $'''E''' Row: ExcelRow_Form
+Excel.CopyCellsFromExcel.CopyCell Instance: ExcelInstant_Form StartColumn: $'''E''' StartRow: ExcelRow_Form
+Excel.SelectCellsFromExcel.SelectCells Instance: ExcelInstant_Form StartColumn: $'''E''' StartRow: ExcelRow_Form + 1 EndColumn: $'''E''' EndRow: FirstFreeRow_DataSource - 2
+MouseAndKeyboard.SendKeys.FocusAndSendKeys TextToSend: $'''{LControlKey}({V})''' DelayBetweenKeystrokes: 10 SendTextAsHardwareKeys: False
+**ENDREGION
+**REGION Start Date
+Excel.WriteToExcel.WriteCell Instance: ExcelInstant_Form Value: $'''=today()''' Column: $'''C''' Row: ExcelRow_Form
+Excel.CopyCellsFromExcel.CopyCell Instance: ExcelInstant_Form StartColumn: $'''C''' StartRow: ExcelRow_Form
+Excel.SelectCellsFromExcel.SelectCells Instance: ExcelInstant_Form StartColumn: $'''C''' StartRow: ExcelRow_Form + 1 EndColumn: $'''C''' EndRow: FirstFreeRow_DataSource - 2
+MouseAndKeyboard.SendKeys.FocusAndSendKeys TextToSend: $'''{LControlKey}({V})''' DelayBetweenKeystrokes: 10 SendTextAsHardwareKeys: False
+**ENDREGION
+**REGION End Date
+Excel.WriteToExcel.WriteCell Instance: ExcelInstant_Form Value: $'''=date(9999,12,31)''' Column: $'''D''' Row: ExcelRow_Form
+Excel.CopyCellsFromExcel.CopyCell Instance: ExcelInstant_Form StartColumn: $'''D''' StartRow: ExcelRow_Form
+Excel.SelectCellsFromExcel.SelectCells Instance: ExcelInstant_Form StartColumn: $'''D''' StartRow: ExcelRow_Form + 1 EndColumn: $'''D''' EndRow: FirstFreeRow_DataSource - 2
+MouseAndKeyboard.SendKeys.FocusAndSendKeys TextToSend: $'''{LControlKey}({V})''' DelayBetweenKeystrokes: 10 SendTextAsHardwareKeys: False
+**ENDREGION
