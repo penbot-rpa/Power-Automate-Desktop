@@ -1,0 +1,25 @@
+Folder.GetSpecialFolder SpecialFolder: Folder.SpecialFolder.DesktopDirectory SpecialFolderPath=> SpecialFolderPath
+Folder.GetFiles Folder: $'''%SpecialFolderPath%\\ManyExcelFile\\FileFromA''' FileFilter: $'''*''' IncludeSubfolders: False FailOnAccessDenied: True SortBy1: Folder.SortBy.LastModified SortDescending1: True SortBy2: Folder.SortBy.NoSort SortDescending2: False SortBy3: Folder.SortBy.NoSort SortDescending3: False Files=> Files
+SET Latest_File TO Files[0]
+Excel.LaunchExcel.LaunchAndOpenUnderExistingProcess Path: Latest_File Visible: True ReadOnly: False Instance=> ExcelInstant_Datasource
+SET ExcelRow_Datasource TO 3
+Excel.GetFirstFreeColumnRow Instance: ExcelInstant_Datasource FirstFreeRow=> FirstFreeRow_DataSource
+Excel.SetActiveWorksheet.ActivateWorksheetByName Instance: ExcelInstant_Datasource Name: $'''ExampleA'''
+Excel.ReadFromExcel.ReadCells Instance: ExcelInstant_Datasource StartColumn: $'''A''' StartRow: 3 EndColumn: $'''A''' EndRow: FirstFreeRow_DataSource - 1 ReadAsText: False FirstLineIsHeader: False RangeValue=> CompanyCode
+Excel.ReadFromExcel.ReadCells Instance: ExcelInstant_Datasource StartColumn: $'''B''' StartRow: 3 EndColumn: $'''B''' EndRow: FirstFreeRow_DataSource - 1 ReadAsText: False FirstLineIsHeader: False RangeValue=> RandomNo
+Excel.LaunchExcel.LaunchAndOpenUnderExistingProcess Path: $'''%SpecialFolderPath%\\ManyExcelFile\\TemplateForm\\NewTemplate.xlsx''' Visible: True ReadOnly: False Instance=> ExcelInstant_Form
+SET ExcelRow_Form TO 2
+Excel.GetFirstFreeColumnRow Instance: ExcelInstant_Form FirstFreeRow=> Form_FirstFreeRow
+Excel.WriteToExcel.WriteCell Instance: ExcelInstant_Form Value: CompanyCode Column: $'''B''' Row: Form_FirstFreeRow
+Excel.WriteToExcel.WriteCell Instance: ExcelInstant_Form Value: RandomNo Column: $'''A''' Row: Form_FirstFreeRow
+DISABLE Display.ShowMessageDialog.ShowMessage Title: $'''Check''' Icon: Display.Icon.None Buttons: Display.Buttons.OK DefaultButton: Display.DefaultButton.Button1 IsTopMost: False
+LOOP FOREACH CurrentItem IN CompanyCode
+    Excel.ReadFromExcel.ReadCell Instance: ExcelInstant_Form StartColumn: $'''A''' StartRow: ExcelRow_Form ReadAsText: False CellValue=> RandomNo_New
+    Excel.ReadFromExcel.ReadCell Instance: ExcelInstant_Form StartColumn: $'''B''' StartRow: ExcelRow_Form ReadAsText: False CellValue=> CompanyCode_New
+    Excel.WriteToExcel.WriteCell Instance: ExcelInstant_Form Value: $'''=TEXT(\"%CompanyCode_New%\",\"0000\")&\"-\"&TEXT(\"%RandomNo_New%\",\"00000\")''' Column: $'''E''' Row: ExcelRow_Form
+    Excel.WriteToExcel.WriteCell Instance: ExcelInstant_Form Value: $'''=today()''' Column: $'''C''' Row: ExcelRow_Form
+    Excel.WriteToExcel.WriteCell Instance: ExcelInstant_Form Value: $'''=date(9999,12,31)''' Column: $'''D''' Row: ExcelRow_Form
+    Variables.IncreaseVariable Value: ExcelRow_Datasource IncrementValue: 1
+    Variables.IncreaseVariable Value: ExcelRow_Form IncrementValue: 1
+    DISABLE Display.ShowMessageDialog.ShowMessage Title: $'''Check''' Icon: Display.Icon.None Buttons: Display.Buttons.OK DefaultButton: Display.DefaultButton.Button1 IsTopMost: False ButtonPressed=> ButtonPressed
+END
