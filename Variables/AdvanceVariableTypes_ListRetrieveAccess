@@ -1,0 +1,42 @@
+# https://learn.microsoft.com/en-us/power-automate/desktop-flows/variable-data-types#list
+**REGION Create list and add item to list
+Variables.CreateNewList List=> List
+Variables.AddItemToList Item: 1 List: List
+Variables.AddItemToList Item: 2 List: List
+Variables.AddItemToList Item: 3 List: List
+Variables.AddItemToList Item: 4 List: List
+Variables.AddItemToList Item: 5 List: List
+# To retrieve a specific item in a list, use the following notation: %VariableName[ItemNumber]%
+Display.ShowMessageDialog.ShowMessage Title: $'''List Index 0''' Message: List[0] Icon: Display.Icon.None Buttons: Display.Buttons.OK DefaultButton: Display.DefaultButton.Button1 IsTopMost: False
+# List data type properties
+Display.ShowMessageDialog.ShowMessage Title: $'''List properties''' Message: $'''List Count = %List.Count%''' Icon: Display.Icon.None Buttons: Display.Buttons.OK DefaultButton: Display.DefaultButton.Button1 IsTopMost: False
+**ENDREGION
+**REGION Read text from file
+# Read text from file action can return a list of text values
+Folder.GetSpecialFolder SpecialFolder: Folder.SpecialFolder.DesktopDirectory SpecialFolderPath=> SpecialFolderPath
+File.ReadTextFromFile.ReadText File: $'''%SpecialFolderPath%\\ListFromFile.txt''' Encoding: File.TextFileEncoding.UTF8 Content=> FileContents
+**ENDREGION
+**REGION Get files in folder
+# Get files in folder action returns a list of files
+Folder.GetFiles Folder: SpecialFolderPath FileFilter: $'''*''' IncludeSubfolders: False FailOnAccessDenied: True SortBy1: Folder.SortBy.NoSort SortDescending1: False SortBy2: Folder.SortBy.NoSort SortDescending2: False SortBy3: Folder.SortBy.NoSort SortDescending3: False Files=> Files
+**ENDREGION
+**REGION Iterate through the items of a list
+# For example, the expression %List[2:4]% retrieves the third and fourth items of the list (results are 3, 4)
+/# From Index 2 to Index 4 but not include Index 4 (Index 2 is 3, Index 3 is 4)
+Run 2 times (3, 4)#/
+LOOP FOREACH CurrentItem1 IN List[2:4]
+    Display.ShowMessageDialog.ShowMessage Title: $'''Current Item List[2:4]''' Message: CurrentItem1 Icon: Display.Icon.None Buttons: Display.Buttons.OK DefaultButton: Display.DefaultButton.Button1 IsTopMost: False
+END
+# Don't set a StartIndex value, for example, %List[:4]% (results are 1, 2, 3, 4)
+/# From 1st Index (Index 0) to Index 4 but not include Index 4 (Index 0 is 1, Index 3 is 4)
+Run 4 times (1, 2, 3, 4)#/
+LOOP FOREACH CurrentItem2 IN List[:4]
+    Display.ShowMessageDialog.ShowMessage Title: $'''Current Item List[:4]''' Message: CurrentItem2 Icon: Display.Icon.None Buttons: Display.Buttons.OK DefaultButton: Display.DefaultButton.Button1 IsTopMost: False
+END
+# Don't set a StopIndex value, for example, %List[2:]% (results 3, 4, 5)
+/# From Index 2 to last index (Index 4) (Index 2 is 3, Index 4 is 5)
+Run 3 time (3, 4, 5)#/
+LOOP FOREACH CurrentItem3 IN List[2:]
+    Display.ShowMessageDialog.ShowMessage Title: $'''Current Item List[:4]''' Message: CurrentItem3 Icon: Display.Icon.None Buttons: Display.Buttons.OK DefaultButton: Display.DefaultButton.Button1 IsTopMost: False
+END
+**ENDREGION
