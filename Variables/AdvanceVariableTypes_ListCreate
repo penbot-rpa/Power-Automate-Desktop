@@ -1,0 +1,10 @@
+Variables.CreateNewList List=> lstAnimal
+Variables.AddItemToList Item: $'''ant''' List: lstAnimal
+Variables.AddItemToList Item: $'''bat''' List: lstAnimal
+Variables.AddItemToList Item: $'''cat''' List: lstAnimal
+Variables.AddItemToList Item: $'''dog''' List: lstAnimal
+SET lstFruit TO ['apple', 'banana', 'cherry', 'durian', 'elderberry']
+Display.ShowMessageDialog.ShowMessage Title: $'''List''' Message: $'''List Animal 2 = %lstAnimal[2]%
+List Fruit 4 = %lstFruit[4]%
+List Animal Count = %lstAnimal.Count%
+List Fruit Count = %lstFruit.Count%''' Icon: Display.Icon.None Buttons: Display.Buttons.OK DefaultButton: Display.DefaultButton.Button1 IsTopMost: False
