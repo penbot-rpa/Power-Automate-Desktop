@@ -1,4 +1,5 @@
 # https://learn.microsoft.com/en-us/power-automate/desktop-flows/variable-data-types#list
+# You can create a list through the Create new list action and add an item to that list through the Add item to list action.
 **REGION Create list and add item to list
 Variables.CreateNewList List=> List
 Variables.AddItemToList Item: 1 List: List
@@ -11,6 +12,7 @@ Display.ShowMessageDialog.ShowMessage Title: $'''List Index 0''' Message: List[0
 # List data type properties
 Display.ShowMessageDialog.ShowMessage Title: $'''List properties''' Message: $'''List Count = %List.Count%''' Icon: Display.Icon.None Buttons: Display.Buttons.OK DefaultButton: Display.DefaultButton.Button1 IsTopMost: False
 **ENDREGION
+# You can also create a list through actions that generate lists as output. For example, the Read text from file action can return a list of text values and the Get files in folder action returns a list of files.
 **REGION Read text from file
 # Read text from file action can return a list of text values
 Folder.GetSpecialFolder SpecialFolder: Folder.SpecialFolder.DesktopDirectory SpecialFolderPath=> SpecialFolderPath
