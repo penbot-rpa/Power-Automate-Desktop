@@ -1,6 +1,6 @@
 Folder.GetSpecialFolder SpecialFolder: Folder.SpecialFolder.DesktopDirectory SpecialFolderPath=> SpecialFolderPath
-WebAutomation.LaunchChrome.LaunchChrome Url: $'''https://faculty.washington.edu/chudler/java/boxes.html''' WindowState: WebAutomation.BrowserWindowState.Normal ClearCache: False ClearCookies: False WaitForPageToLoadTimeout: 60 Timeout: 60 PiPUserDataFolderMode: WebAutomation.PiPUserDataFolderModeEnum.AutomaticProfile BrowserInstance=> Browser
 File.ReadTextFromFile.ReadTextAsList File: $'''%SpecialFolderPath%\\ListSquare.txt''' Encoding: File.TextFileEncoding.UTF8 Contents=> List
+WebAutomation.LaunchChrome.LaunchChrome Url: $'''https://faculty.washington.edu/chudler/java/boxes.html''' WindowState: WebAutomation.BrowserWindowState.Normal ClearCache: False ClearCookies: False WaitForPageToLoadTimeout: 60 Timeout: 60 PiPUserDataFolderMode: WebAutomation.PiPUserDataFolderModeEnum.AutomaticProfile BrowserInstance=> Browser
 LOOP FOREACH CurrentItem IN List
     WebAutomation.Click.Click BrowserInstance: Browser Control: appmask['Web Page \'h ... boxes.html\'']['Input checkbox'] ClickType: WebAutomation.ClickType.LeftClick MouseClick: True WaitForPageToLoadTimeout: 60 MousePositionRelativeToElement: WebAutomation.RectangleEdgePoint.MiddleCenter OffsetX: 0 OffsetY: 0
 END
