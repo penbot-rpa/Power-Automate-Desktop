@@ -1,0 +1,45 @@
+Folder.GetSpecialFolder SpecialFolder: Folder.SpecialFolder.DesktopDirectory SpecialFolderPath=> SpecialFolderPath
+Outlook.Launch Instance=> OutlookInstance
+Outlook.RetrieveEmailMessages.RetrieveEmails Instance: OutlookInstance Account: $'''<yourEmail>''' MailFolder: $'''Inbox''' EmailsToRetrieve: Outlook.RetrieveMessagesMode.All MarkAsRead: True ReadBodyAsHtml: False FromContains: $'''no-reply@grab.com''' SubjectContains: $'''Your Grab E-Receipt''' Messages=> RetrievedEmails
+Variables.CreateNewList List=> ListPrice
+Variables.CreateNewList List=> ListDateTime
+Variables.CreateNewList List=> ListShopName
+LOOP FOREACH CurrentItem IN RetrievedEmails
+    # Price RegEx
+    Text.ParseText.RegexParseForFirstOccurrence Text: CurrentItem.BodyText TextToFind: $'''฿\\s\\d+''' StartingPosition: 0 IgnoreCase: False Match=> MatchPrice
+    # Date Time RegEx
+    Text.ParseText.RegexParseForFirstOccurrence Text: CurrentItem.BodyText TextToFind: $'''\\d{2}\\s\\w{3}\\s\\d{2}\\s\\d{2}\\:\\d{2}\\s\\+\\d{4}''' StartingPosition: 0 IgnoreCase: False Match=> MatchDate
+    # Find Thai word สถานที่เริ่มต้นการเดินทาง: and store in PositionStartPoint
+    Text.ParseText.ParseForFirstOccurrence Text: CurrentItem.BodyText TextToFind: $'''สถานที่เริ่มต้นการเดินทาง:''' StartingPosition: 0 IgnoreCase: False OccurrencePosition=> PositionStartPoint
+    # Find Thai word สถานที่ปลายทาง: PositionEndPoint
+    Text.ParseText.ParseForFirstOccurrence Text: CurrentItem.BodyText TextToFind: $'''สถานที่ปลายทาง:''' StartingPosition: 0 IgnoreCase: False OccurrencePosition=> PositionEndPoint
+    # Find Shop Name from PositionEndPoint - PositionStartPoint (Start from PositionStartPoint)
+    Text.GetSubtext.GetSubtext Text: CurrentItem.BodyText CharacterPosition: PositionStartPoint NumberOfChars: PositionEndPoint - PositionStartPoint Subtext=> ShopName
+    # Replace Thai word สถานที่เริ่มต้นการเดินทาง: with null %''%
+    Text.Replace Text: ShopName TextToFind: $'''สถานที่เริ่มต้นการเดินทาง:''' IsRegEx: False IgnoreCase: False ReplaceWith: $'''%''%''' ActivateEscapeSequences: False Result=> Replaced
+    # Trim White space (Clean Shop Name)
+    Text.Trim Text: Replaced TrimOption: Text.TrimOption.Both TrimmedText=> TrimmedTextShopName
+    DISABLE Display.ShowMessageDialog.ShowMessage Title: $'''Check''' Message: $'''Price %MatchPrice%
+Date %MatchDate%
+Shop %TrimmedTextShopName%''' Icon: Display.Icon.None Buttons: Display.Buttons.OK DefaultButton: Display.DefaultButton.Button1 IsTopMost: False ButtonPressed=> ButtonPressed
+    Variables.AddItemToList Item: MatchPrice List: ListPrice
+    Variables.AddItemToList Item: MatchDate List: ListDateTime
+    Variables.AddItemToList Item: TrimmedTextShopName List: ListShopName
+END
+Variables.CreateNewDatatable InputTable: { ^['Price', 'Date Time', 'Shop Name'], [$'''''', $'''''', $''''''] } DataTable=> DataTable
+# 3 Lists have the same length
+LOOP LoopIndex FROM 0 TO ListPrice.Count - 1 STEP 1
+    SET RowMember1 TO ListPrice[LoopIndex]
+    SET RowMember2 TO ListDateTime[LoopIndex]
+    SET RowMember3 TO ListShopName[LoopIndex]
+    SET DataRow TO [RowMember1, RowMember2, RowMember3]
+    Variables.AddRowToDataTable.AppendRowToDataTable DataTable: DataTable RowToAdd: DataRow
+    Variables.DeleteEmptyRowsFromDataTable DataTable: DataTable
+END
+Excel.LaunchExcel.LaunchUnderExistingProcess Visible: True Instance=> ExcelInstance
+Excel.WriteToExcel.WriteCell Instance: ExcelInstance Value: $'''Price''' Column: $'''A''' Row: 1
+Excel.WriteToExcel.WriteCell Instance: ExcelInstance Value: $'''Date Time''' Column: $'''B''' Row: 1
+Excel.WriteToExcel.WriteCell Instance: ExcelInstance Value: $'''Shop Name''' Column: $'''C''' Row: 1
+Excel.WriteToExcel.WriteCell Instance: ExcelInstance Value: DataTable Column: 1 Row: 2
+Excel.CloseExcel.CloseAndSaveAs Instance: ExcelInstance DocumentFormat: Excel.ExcelFormat.FromExtension DocumentPath: $'''%SpecialFolderPath%\\GrabReport.xlsx'''
+Outlook.SendEmailThroughOutlook.SendEmail Instance: OutlookInstance Account: $'''<yourEmail>''' SendTo: $'''<yourEmail>''' Subject: $'''Grab Report''' Body: $'''Please find attach Grab Report.''' IsBodyHtml: False IsDraft: False Attachments: $'''%SpecialFolderPath%\\GrabReport.xlsx'''
