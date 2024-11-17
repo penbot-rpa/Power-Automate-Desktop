@@ -1,0 +1,15 @@
+# https://www.petefreitag.com/blog/ascii-chr-10-chr-13/
+SET TestString TO $'''Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur sit amet lorem vel ligula vestibulum vehicula. In nec nibh pretium, auctor purus in, vestibulum massa. Vestibulum porttitor id dolor in consectetur. Ut tempor metus eget arcu blandit, et tempor felis venenatis. Cras vitae congue arcu, nec laoreet erat. Proin fermentum lacinia neque, volutpat porta lorem rhoncus nec. Phasellus molestie imperdiet blandit. Etiam scelerisque, nulla at suscipit tempus, metus eros commodo turpis, ut pulvinar sapien metus sed ligula. Vivamus vel urna at dui sodales congue venenatis vitae velit: At [Praesent],
+Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Aliquam viverra tristique ullamcorper. Sed elit mi, congue at ligula non, viverra ullamcorper leo. Proin nec egestas elit. Fusce sem diam, porttitor a neque eget, maximus viverra ipsum. Quisque posuere varius enim, nec efficitur mi scelerisque et. Nullam volutpat turpis id finibus ornare.'''
+# Display original text
+Display.ShowMessageDialog.ShowMessage Title: $'''Original Text''' Message: TestString Icon: Display.Icon.None Buttons: Display.Buttons.OK DefaultButton: Display.DefaultButton.Button1 IsTopMost: False
+# Find new line position
+Text.ParseText.RegexParseForFirstOccurrence Text: TestString TextToFind: $'''\\n''' StartingPosition: 0 IgnoreCase: False OccurrencePosition=> PositionNewLine
+# Find carriage return position
+Text.ParseText.RegexParseForFirstOccurrence Text: TestString TextToFind: $'''\\r''' StartingPosition: 0 IgnoreCase: False OccurrencePosition=> PositionCarriageReturn
+Text.Replace Text: TestString TextToFind: $'''\\n''' IsRegEx: True IgnoreCase: False ReplaceWith: $'''%''%''' ActivateEscapeSequences: False Result=> Replaced
+# Display text which delete new line
+Display.ShowMessageDialog.ShowMessage Title: $'''Delete new line''' Message: Replaced Icon: Display.Icon.None Buttons: Display.Buttons.OK DefaultButton: Display.DefaultButton.Button1 IsTopMost: False
+# Display text which delete carriage return
+Text.Replace Text: Replaced TextToFind: $'''\\r''' IsRegEx: True IgnoreCase: False ReplaceWith: $'''%''%''' ActivateEscapeSequences: False Result=> Replaced
+Display.ShowMessageDialog.ShowMessage Title: $'''Delete carriage return''' Message: Replaced Icon: Display.Icon.None Buttons: Display.Buttons.OK DefaultButton: Display.DefaultButton.Button1 IsTopMost: False
