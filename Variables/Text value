@@ -1,0 +1,9 @@
+SET Name TO $'''John'''
+SET Sirname TO $'''McCarthy'''
+SET Fullname TO Name + ' ' + Sirname
+SET Fullname2 TO $'''%Name% %Sirname%'''
+Display.ShowMessageDialog.ShowMessage Title: $'''Properties''' Message: $'''Length %Fullname.Length%
+IsEmpty %Fullname.IsEmpty%
+ToUpper %Fullname.ToUpper%
+ToLower %Fullname.ToLower%
+Trimmed %Fullname.Trimmed%''' Icon: Display.Icon.None Buttons: Display.Buttons.OK DefaultButton: Display.DefaultButton.Button1 IsTopMost: False
