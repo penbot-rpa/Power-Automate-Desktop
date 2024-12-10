@@ -1,0 +1,7 @@
+# http://penbotrpa.com/2024/12/11/a-few-best-practices-to-create-your-desktop-flow/
+Display.InputDialog Title: $'''Input 1''' Message: $'''Please input value 0-9''' InputType: Display.InputType.SingleLine IsTopMost: False UserInput=> txtInput1
+Text.ToNumber Text: txtInput1 Number=> numInput1
+Display.InputDialog Title: $'''Input 2''' Message: $'''Please input value 0-9''' InputType: Display.InputType.SingleLine IsTopMost: False UserInput=> txtInput2
+Text.ToNumber Text: txtInput2 Number=> numInput2
+SET sumResult TO numInput1 + numInput2
+Display.ShowMessageDialog.ShowMessageWithTimeout Title: $'''Output''' Message: sumResult Icon: Display.Icon.None Buttons: Display.Buttons.OK DefaultButton: Display.DefaultButton.Button1 IsTopMost: False Timeout: 3
