@@ -1,0 +1,26 @@
+**REGION List
+# https://learn.microsoft.com/en-us/power-automate/desktop-flows/variable-data-types#list
+Variables.CreateNewList List=> List
+Variables.AddItemToList Item: 1 List: List
+Variables.AddItemToList Item: 2 List: List
+Variables.AddItemToList Item: 3 List: List
+# To retrieve a specific item in a list, use the following notation: %VariableName[ItemNumber]%
+SET FirstListItem TO List[0]
+Display.ShowMessageDialog.ShowMessage Title: $'''Properties List''' Message: List.Count Icon: Display.Icon.None Buttons: Display.Buttons.OK DefaultButton: Display.DefaultButton.Button1 IsTopMost: False
+# Create list with single action and using their properties
+SET lstWeekday TO ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']
+Display.ShowMessageDialog.ShowMessage Title: $'''Properties List Weekday''' Message: $'''%lstWeekday.Count%
+%lstWeekday[0].ToUpper%
+%lstWeekday[2].ToLower%
+%lstWeekday[2].Length%''' Icon: Display.Icon.None Buttons: Display.Buttons.OK DefaultButton: Display.DefaultButton.Button1 IsTopMost: False
+# If you need to access only a specific part of a list, use the %VariableName[StartIndex:StopIndex]% notation.
+# For example, the expression %List[2:4]% retrieves the third and fourth items of the list.
+Display.ShowMessageDialog.ShowMessage Title: $'''Retrieves the third and fourth items of List Weekday''' Message: $'''The third and fourth
+%lstWeekday[2:4]%''' Icon: Display.Icon.None Buttons: Display.Buttons.OK DefaultButton: Display.DefaultButton.Button1 IsTopMost: False
+# To slice a list from the start to a specific item, don't set a StartIndex value, for example, %List[:4]%.
+Display.ShowMessageDialog.ShowMessage Title: $'''Start to a specific item of List Weekday''' Message: $'''Start to a specific item 
+%lstWeekday[:4]%''' Icon: Display.Icon.None Buttons: Display.Buttons.OK DefaultButton: Display.DefaultButton.Button1 IsTopMost: False
+# To slice a list from a specific index to the end, don't set a StopIndex value, for example, %List[2:]%.
+Display.ShowMessageDialog.ShowMessage Title: $'''Specific index to the end of List Weekday''' Message: $'''Specific index to the end
+%lstWeekday[2:]%''' Icon: Display.Icon.None Buttons: Display.Buttons.OK DefaultButton: Display.DefaultButton.Button1 IsTopMost: False
+**ENDREGION
