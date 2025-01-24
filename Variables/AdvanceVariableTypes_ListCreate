@@ -1,8 +1,10 @@
+# "Create new list" and "Add item to list"
 Variables.CreateNewList List=> lstAnimal
 Variables.AddItemToList Item: $'''ant''' List: lstAnimal
 Variables.AddItemToList Item: $'''bat''' List: lstAnimal
 Variables.AddItemToList Item: $'''cat''' List: lstAnimal
 Variables.AddItemToList Item: $'''dog''' List: lstAnimal
+# "Set variable"
 SET lstFruit TO ['apple', 'banana', 'cherry', 'durian', 'elderberry']
 Display.ShowMessageDialog.ShowMessage Title: $'''List''' Message: $'''List Animal 2 = %lstAnimal[2]%
 List Fruit 4 = %lstFruit[4]%
