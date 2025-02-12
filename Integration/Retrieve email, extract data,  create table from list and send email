@@ -1,6 +1,7 @@
+# Convert list to data table > https://chatgpt.com/share/67910d86-74ec-8012-bc2e-14c2722cd9ed
 Folder.GetSpecialFolder SpecialFolder: Folder.SpecialFolder.DesktopDirectory SpecialFolderPath=> SpecialFolderPath
 Outlook.Launch Instance=> OutlookInstance
-Outlook.RetrieveEmailMessages.RetrieveEmails Instance: OutlookInstance Account: $'''<yourEmail>''' MailFolder: $'''Inbox''' EmailsToRetrieve: Outlook.RetrieveMessagesMode.All MarkAsRead: True ReadBodyAsHtml: False FromContains: $'''no-reply@grab.com''' SubjectContains: $'''Your Grab E-Receipt''' Messages=> RetrievedEmails
+Outlook.RetrieveEmailMessages.RetrieveEmails Instance: OutlookInstance Account: $'''<your mail>''' MailFolder: $'''Inbox''' EmailsToRetrieve: Outlook.RetrieveMessagesMode.All MarkAsRead: False ReadBodyAsHtml: False FromContains: $'''no-reply@grab.com''' SubjectContains: $'''Your Grab E-Receipt''' Messages=> RetrievedEmails
 Variables.CreateNewList List=> ListPrice
 Variables.CreateNewList List=> ListDateTime
 Variables.CreateNewList List=> ListShopName
@@ -42,4 +43,4 @@ Excel.WriteToExcel.WriteCell Instance: ExcelInstance Value: $'''Date Time''' Col
 Excel.WriteToExcel.WriteCell Instance: ExcelInstance Value: $'''Shop Name''' Column: $'''C''' Row: 1
 Excel.WriteToExcel.WriteCell Instance: ExcelInstance Value: DataTable Column: 1 Row: 2
 Excel.CloseExcel.CloseAndSaveAs Instance: ExcelInstance DocumentFormat: Excel.ExcelFormat.FromExtension DocumentPath: $'''%SpecialFolderPath%\\GrabReport.xlsx'''
-Outlook.SendEmailThroughOutlook.SendEmail Instance: OutlookInstance Account: $'''<yourEmail>''' SendTo: $'''<yourEmail>''' Subject: $'''Grab Report''' Body: $'''Please find attach Grab Report.''' IsBodyHtml: False IsDraft: False Attachments: $'''%SpecialFolderPath%\\GrabReport.xlsx'''
+Outlook.SendEmailThroughOutlook.SendEmail Instance: OutlookInstance Account: $'''<your mail>''' SendTo: $'''<your mail>''' Subject: $'''Grab Report''' Body: $'''Please find attach Grab Report.''' IsBodyHtml: False IsDraft: False Attachments: $'''%SpecialFolderPath%\\GrabReport.xlsx'''
