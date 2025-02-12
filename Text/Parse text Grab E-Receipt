@@ -1,0 +1,9 @@
+Folder.GetSpecialFolder SpecialFolder: Folder.SpecialFolder.DesktopDirectory SpecialFolderPath=> SpecialFolderPath
+File.ReadTextFromFile.ReadText File: $'''%SpecialFolderPath%\\ทานอาหารให้อร่อย!.txt''' Encoding: File.TextFileEncoding.UTF8 Content=> FileContents
+Text.ParseText.RegexParseForFirstOccurrence Text: FileContents TextToFind: $'''฿\\s\\d+''' StartingPosition: 0 IgnoreCase: False Match=> Match
+Text.ParseText.RegexParseForFirstOccurrence Text: FileContents TextToFind: $'''\\d{2}\\s\\w{3}\\s\\d{2}\\s\\d{2}\\:\\d{2}\\s\\+\\d{4}''' StartingPosition: 0 IgnoreCase: False Match=> Match2
+Text.ParseText.ParseForFirstOccurrence Text: FileContents TextToFind: $'''สถานที่เริ่มต้นการเดินทาง:''' StartingPosition: 0 IgnoreCase: False OccurrencePosition=> Position3
+Text.ParseText.ParseForFirstOccurrence Text: FileContents TextToFind: $'''สถานที่ปลายทาง:''' StartingPosition: 0 IgnoreCase: False OccurrencePosition=> Position4
+Text.GetSubtext.GetSubtext Text: FileContents CharacterPosition: Position3 NumberOfChars: Position4 - Position3 Subtext=> Subtext
+Text.Replace Text: Subtext TextToFind: $'''สถานที่เริ่มต้นการเดินทาง:''' IsRegEx: False IgnoreCase: False ReplaceWith: $'''%''%''' ActivateEscapeSequences: False Result=> Replaced
+Text.Trim Text: Replaced TrimOption: Text.TrimOption.Both TrimmedText=> TrimmedText
