@@ -1,0 +1,8 @@
+# https://learn.microsoft.com/en-us/power-automate/desktop-flows/variable-data-types#custom-object
+# Create a new empty custom object
+SET EmptyCustomObj TO {{ }}
+# Create and initialize a custom object
+SET Product TO { 'Name': 'OLED TV', 'Code': '2544XEY', 'InStock': 'Yes' }
+# Update the value of an existing proprty or add a new one
+SET Product['InStock'] TO $'''No'''
+SET Product['Color'] TO $'''Silver'''
