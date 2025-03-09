@@ -1,0 +1,22 @@
+**REGION User input
+Display.InputDialog Title: $'''User input''' Message: $'''Please ask your question''' InputType: Display.InputType.SingleLine IsTopMost: True UserInput=> UserInput ButtonPressed=> ButtonPressed
+**ENDREGION
+IF ButtonPressed = $'''OK''' THEN
+    **REGION OpenAI
+    SET MyKey TO $'''<your api key>'''
+    Web.InvokeWebService.InvokeWebServicePost Url: $'''https://api.openai.com/v1/chat/completions''' Accept: $'''application/json''' ContentType: $'''application/json''' CustomHeaders: $'''Authorization:Bearer %MyKey%''' RequestBody: $'''{
+ \"model\": \"gpt-4o-mini\",
+ \"messages\": [{\"role\": \"user\", \"content\": \"%UserInput%\"}],
+ \"max_tokens\": 500,
+ \"temperature\": 0.7
+}''' ConnectionTimeout: 180 FollowRedirection: False ClearCookies: False FailOnErrorStatus: False EncodeRequestBody: False UserAgent: $'''Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.21) Gecko/20100312 Firefox/3.6''' Encoding: Web.Encoding.AutoDetect AcceptUntrustedCertificates: False UploadType: Web.UploadType.FilePath TrimRequestBody: True Response=> WebServiceResponse
+    Variables.ConvertJsonToCustomObject Json: WebServiceResponse CustomObject=> ResponseObject
+    **ENDREGION
+    BLOCK API_Block
+ON BLOCK ERROR all
+    CALL APICatch
+    THROW ERROR
+END
+        Display.ShowMessageDialog.ShowMessage Title: $'''AI Response''' Message: ResponseObject.choices[0].message.content Icon: Display.Icon.None Buttons: Display.Buttons.OK DefaultButton: Display.DefaultButton.Button1 IsTopMost: True
+    END
+END
