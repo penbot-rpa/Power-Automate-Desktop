@@ -1,0 +1,7 @@
+Variables.CreateNewDatatable InputTable: { ^['value #1', 'value #2', 'value #3'], [$'''Report Name 1''', $'''0%%''', $'''Cancel'''], [$'''Report Name 2''', $'''100%%''', $'''Completed'''], [$'''Report Name 3''', $'''0%%''', $'''Cancelled by Admin'''] } DataTable=> MyDataTable
+# Use index row and column name to extract value from data table.
+SET NeededValue1 TO MyDataTable[0]['value #3']
+Display.ShowMessageDialog.ShowMessage Title: $'''Needed Value (Index Row, Column Name)''' Message: NeededValue1 Icon: Display.Icon.None Buttons: Display.Buttons.OK DefaultButton: Display.DefaultButton.Button1 IsTopMost: False
+# Use index row and index column to extract value from data table.
+SET NeededValue2 TO MyDataTable[0][2]
+Display.ShowMessageDialog.ShowMessage Title: $'''Needed Value (Index Row, Index Column)''' Message: NeededValue2 Icon: Display.Icon.None Buttons: Display.Buttons.OK DefaultButton: Display.DefaultButton.Button1 IsTopMost: False
