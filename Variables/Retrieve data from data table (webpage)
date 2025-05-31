@@ -1,0 +1,6 @@
+WebAutomation.LaunchChrome.LaunchChrome Url: $'''https://www.detectiveconanworld.com/wiki/Movies''' WindowState: WebAutomation.BrowserWindowState.Maximized ClearCache: False ClearCookies: False WaitForPageToLoadTimeout: 60 Timeout: 60 PiPUserDataFolderMode: WebAutomation.PiPUserDataFolderModeEnum.AutomaticProfile TargetDesktop: $'''{\"DisplayName\":\"Local computer\",\"Route\":{\"ServerType\":\"Local\",\"ServerAddress\":\"\"},\"DesktopType\":\"local\"}''' BrowserInstance=> Browser
+WebAutomation.ExtractData.ExtractHtmlTable BrowserInstance: Browser Control: $'''html > body > div:eq(3) > div:eq(1) > div > div > div > div:eq(0) > div > div:eq(1) > div:eq(3) > div > table:eq(0)''' ExtractionParameters: {[$'''Movie''', $'''Title''', $'''Original airdate''', $'''English airdate''', $'''Plot''', $'''Runtime''', $'''Box office
+'''], [$'''''', $'''''', $'''''', $'''''', $'''''', $'''''', $''''''] } PostProcessData: False TimeoutInSeconds: 60 ExtractedData=> DataFromWebPage
+LOOP FOREACH CurrentItem IN DataFromWebPage
+    Display.ShowMessageDialog.ShowMessage Title: $'''Title''' Message: CurrentItem['Title'] Icon: Display.Icon.None Buttons: Display.Buttons.OK DefaultButton: Display.DefaultButton.Button1 IsTopMost: False
+END
