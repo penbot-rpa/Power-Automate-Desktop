@@ -1,0 +1,10 @@
+DateTime.GetCurrentDateTime.Local DateTimeFormat: DateTime.DateTimeFormat.DateAndTime CurrentDateTime=> StartTime
+SET FolderPath TO $'''{yourPath}'''
+Folder.GetFiles Folder: FolderPath FileFilter: $'''*''' IncludeSubfolders: False FailOnAccessDenied: True SortBy1: Folder.SortBy.NoSort SortDescending1: False SortBy2: Folder.SortBy.NoSort SortDescending2: False SortBy3: Folder.SortBy.NoSort SortDescending3: False Files=> Files
+LOOP FOREACH CurrentItem IN Files
+    IF CurrentItem.Extension = $'''.xlsx''' THEN
+        File.Move Files: CurrentItem.FullName Destination: $'''{yourPath}\\Excel''' IfFileExists: File.IfExists.DoNothing MovedFiles=> MovedFiles
+    END
+END
+DateTime.GetCurrentDateTime.Local DateTimeFormat: DateTime.DateTimeFormat.DateAndTime CurrentDateTime=> EndTime
+DateTime.Subtract FromDate: EndTime SubstractDate: StartTime TimeUnit: DateTime.DifferenceTimeUnit.Seconds TimeDifference=> TimeDifference
