@@ -1,0 +1,6 @@
+Excel.LaunchExcel.LaunchUnderExistingProcess Visible: True UseMachineLocale: False Instance=> ExcelInstance
+Excel.WriteToExcel.WriteCell Instance: ExcelInstance Value: $'''7-22-2025''' Column: $'''A''' Row: 1
+/# Apply date format Ctrl+Shift+Number sign (#) 
+https://support.microsoft.com/en-us/office/keyboard-shortcuts-in-excel-1798d9d5-842a-42b8-9c99-9b7213f0040f#/
+# https://chatgpt.com/share/687ef0b6-a5bc-8001-8f48-b2bb9b1df9b1
+MouseAndKeyboard.SendKeys.FocusAndSendKeys TextToSend: $'''{Control}({Shift}({D3}))''' DelayBetweenKeystrokes: 10 SendTextAsHardwareKeys: False
