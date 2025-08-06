@@ -1,4 +1,5 @@
-Variables.CreateNewDatatable InputTable: { ^['Document Date', 'Document No.'], [$'''10/7/2025 12:00:00 AM''', 11123456], [$'''11/7/2025 12:00:00 AM''', 11123457], [$'''11/7/2025 12:00:00 AM''', 11123458], [$'''11/7/2025 12:00:00 AM''', 11123459], [$'''11/7/2025 12:00:00 AM''', 11123460], [$'''12/7/2025 12:00:00 AM''', 11123461], [$'''12/7/2025 12:00:00 AM''', 11123462], [$'''12/7/2025 12:00:00 AM''', 11123465], [$'''13/7/2025 12:00:00 AM''', 11123466], [$'''13/7/2025 12:00:00 AM''', 11123467], [$'''13/7/2025 12:00:00 AM''', 11123469], [$'''13/7/2025 12:00:00 AM''', 11123472], [$'''13/7/2025 12:00:00 AM''', 11123473], [$'''13/7/2025 12:00:00 AM''', 11123474], [$'''13/7/2025 12:00:00 AM''', 11123475] } DataTable=> DataTable
+# DataTable have 20 rows, you can add or delete rows as needed
+Variables.CreateNewDatatable InputTable: { ^['Document Date', 'Document No.'], [$'''10/7/2025 12:00:00 AM''', 11123456], [$'''11/7/2025 12:00:00 AM''', 11123457], [$'''11/7/2025 12:00:00 AM''', 11123458], [$'''11/7/2025 12:00:00 AM''', 11123459], [$'''11/7/2025 12:00:00 AM''', 11123460], [$'''12/7/2025 12:00:00 AM''', 11123461], [$'''12/7/2025 12:00:00 AM''', 11123462], [$'''12/7/2025 12:00:00 AM''', 11123465], [$'''13/7/2025 12:00:00 AM''', 11123466], [$'''13/7/2025 12:00:00 AM''', 11123467], [$'''13/7/2025 12:00:00 AM''', 11123469], [$'''13/7/2025 12:00:00 AM''', 11123472], [$'''13/7/2025 12:00:00 AM''', 11123473], [$'''13/7/2025 12:00:00 AM''', 11123474], [$'''13/7/2025 12:00:00 AM''', 11123475], [$'''13/7/2025 12:00:00 AM''', 11123480], [$'''13/7/2025 12:00:00 AM''', 11123481], [$'''13/7/2025 12:00:00 AM''', 11123482], [$'''13/7/2025 12:00:00 AM''', 11123483], [$'''13/7/2025 12:00:00 AM''', 11123484] } DataTable=> DataTable
 WebAutomation.LaunchEdge.LaunchEdge Url: $'''https://projectbenefitpenbot.my.canva.site/responsive-web-form-design-with-pagination''' WindowState: WebAutomation.BrowserWindowState.Maximized ClearCache: False ClearCookies: False WaitForPageToLoadTimeout: 60 Timeout: 60 PiPUserDataFolderMode: WebAutomation.PiPUserDataFolderModeEnum.AutomaticProfile TargetDesktop: $'''{\"DisplayName\":\"Local computer\",\"Route\":{\"ServerType\":\"Local\",\"ServerAddress\":\"\"},\"DesktopType\":\"local\"}''' BrowserInstance=> Browser
 # WebIndex for xpath
 SET WebIndex TO 0
@@ -14,15 +15,22 @@ Web index %WebIndex%''' Icon: Display.Icon.None Buttons: Display.Buttons.OK Defa
         WebAutomation.PopulateTextField.PopulateTextFieldUsePhysicalKeyboard BrowserInstance: Browser Control: appmask['Web Page \'h ... pagination\'']['Input text \'entry-0\''] Text: CurrentItem['Document No.'] Mode: WebAutomation.PopulateTextMode.Replace UnfocusAfterPopulate: True WaitForPageToLoadTimeout: 60
         # Increase WebIndex before condition check modulus & set zero to WebIndex (avoid mismatch text input in website)
         Variables.IncreaseVariable Value: WebIndex IncrementValue: 1
-        # If number mod 10 == 0, then click next
+        # If number mod 10 == 0, then click next or submit (depend on number of transaction)
         IF Remainder = 0 THEN
+            # If not last record, then click next page
             # Remove iframe 'Next' button
-            WebAutomation.PressButton.PressButton BrowserInstance: Browser Control: appmask['Web Page \'h ... pagination\'']['Button \'Next\' 2'] WaitForPageToLoadTimeout: 60
-            # Due to page change, reset WebIndex to zero
-            SET WebIndex TO 0
+            IF DataIndex <> DataTable.RowsCount THEN
+                WebAutomation.PressButton.PressButton BrowserInstance: Browser Control: appmask['Web Page \'h ... pagination\'']['Button \'Next\' 2'] WaitForPageToLoadTimeout: 60
+                # Due to page change, reset WebIndex to zero
+                SET WebIndex TO 0
+            ELSE IF DataIndex = DataTable.RowsCount THEN
+                # If last record, then click submit
+                # Remove iframe 'Submit' button
+                WebAutomation.PressButton.PressButton BrowserInstance: Browser Control: appmask['Web Page \'h ... pagination\'']['Button \'Submit\' 2'] WaitForPageToLoadTimeout: 60
+            END
         END
         # If last record, then click submit
-        IF DataIndex = DataTable.RowsCount THEN
+        IF (Remainder <> 0 AND DataIndex = DataTable.RowsCount) = $'''TRUE''' THEN
             # Remove iframe 'Submit' button
             WebAutomation.PressButton.PressButton BrowserInstance: Browser Control: appmask['Web Page \'h ... pagination\'']['Button \'Submit\' 2'] WaitForPageToLoadTimeout: 60
         END
