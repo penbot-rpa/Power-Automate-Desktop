@@ -24,7 +24,7 @@ IF ButtonPressed = $'''OK''' THEN
     Excel.WriteToExcel.WriteCell Instance: ExcelInstance Value: FormattedDate Column: $'''A''' Row: FirstFreeRow
     Excel.WriteToExcel.WriteCell Instance: ExcelInstance Value: FormattedTime Column: $'''B''' Row: FirstFreeRow
     Excel.WriteToExcel.WriteCell Instance: ExcelInstance Value: Weather Column: $'''C''' Row: FirstFreeRow
-    Excel.WriteToExcel.WriteCell Instance: ExcelInstance Value: City Column: $'''D''' Row: FirstFreeRow
+    Excel.WriteToExcel.WriteCell Instance: ExcelInstance Value: $'''%City%, Run from User Input City by manually type''' Column: $'''D''' Row: FirstFreeRow
     Excel.CloseExcel.CloseAndSave Instance: ExcelInstance
     **ENDREGION
 END
