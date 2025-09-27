@@ -23,7 +23,7 @@ IF ButtonPressed = $'''OK''' THEN
     Excel.ActivateCellInExcel.ActivateCell Instance: ExcelInstance Column: $'''B''' Row: FirstFreeRow
     MouseAndKeyboard.SendKeys.FocusAndSendKeys TextToSend: $'''{Control}({Shift}({OemSemicolon})){Enter}''' DelayBetweenKeystrokes: 10 SendTextAsHardwareKeys: False
     Excel.WriteToExcel.WriteCell Instance: ExcelInstance Value: Weather Column: $'''C''' Row: FirstFreeRow
-    Excel.WriteToExcel.WriteCell Instance: ExcelInstance Value: City Column: $'''D''' Row: FirstFreeRow
+    Excel.WriteToExcel.WriteCell Instance: ExcelInstance Value: $'''%City%, Run from User select from List City''' Column: $'''D''' Row: FirstFreeRow
     Excel.CloseExcel.CloseAndSave Instance: ExcelInstance
     **ENDREGION
 END
