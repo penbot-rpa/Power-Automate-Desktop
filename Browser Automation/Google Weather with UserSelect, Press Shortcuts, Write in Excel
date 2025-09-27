@@ -14,10 +14,8 @@ IF ButtonPressed = $'''OK''' THEN
     DISABLE Display.ShowMessageDialog.ShowMessage Title: $'''Result''' Message: AttributeValue Icon: Display.Icon.Information Buttons: Display.Buttons.OK DefaultButton: Display.DefaultButton.Button1 IsTopMost: False
     WebAutomation.CloseWebBrowser BrowserInstance: Browser
     **ENDREGION
-    **REGION Get Date
-    # Shortcuts date (Ctrl+'), time (Ctrl+;)
-    **ENDREGION
     **REGION Write Excel
+    # Shortcuts date (Ctrl+;), time (Ctrl+Shift+;)
     Excel.LaunchExcel.LaunchAndOpenUnderExistingProcess Path: $'''%SpecialFolderPath%\\GetWeatherDesktop.xlsx''' Visible: True ReadOnly: False UseMachineLocale: False Instance=> ExcelInstance
     Excel.GetFirstFreeColumnRow Instance: ExcelInstance FirstFreeColumn=> FirstFreeColumn FirstFreeRow=> FirstFreeRow
     Excel.ActivateCellInExcel.ActivateCell Instance: ExcelInstance Column: $'''A''' Row: FirstFreeRow
