@@ -1,10 +1,11 @@
+# https://github.com/penbot-rpa/Power-Automate-Desktop/blob/04c8bb31839435eea73bbc4621d82d4314291450/Browser%20Automation/Google%20Weather%20with%20UserSelect%2C%20Press%20Shortcuts%2C%20Write%20in%20Excel
 Folder.GetSpecialFolder SpecialFolder: Folder.SpecialFolder.DesktopDirectory SpecialFolderPath=> SpecialFolderPath
 Display.SelectFromListDialog.SelectFromList Title: $'''City''' Message: $'''Please select city''' List: $'''Bangkok
 Tokyo
-Seoul''' IsTopMost: False AllowEmpty: False SelectedItem=> City SelectedIndex=> SelectedIndex ButtonPressed=> ButtonPressed
+Seoul''' IsTopMost: True AllowEmpty: False SelectedItem=> City SelectedIndex=> SelectedIndex ButtonPressed=> ButtonPressed
 IF ButtonPressed = $'''OK''' THEN
     **REGION Google Search
-    WebAutomation.LaunchChrome.LaunchChrome Url: $'''www.google.com''' WindowState: WebAutomation.BrowserWindowState.Normal ClearCache: False ClearCookies: False WaitForPageToLoadTimeout: 60 Timeout: 60 BrowserInstance=> Browser
+    WebAutomation.LaunchChrome.LaunchChrome Url: $'''www.google.com''' WindowState: WebAutomation.BrowserWindowState.Maximized ClearCache: False ClearCookies: False WaitForPageToLoadTimeout: 60 Timeout: 60 PiPUserDataFolderMode: WebAutomation.PiPUserDataFolderModeEnum.AutomaticProfile TargetDesktop: $'''{\"DisplayName\":\"Local computer\",\"Route\":{\"ServerType\":\"Local\",\"ServerAddress\":\"\"},\"DesktopType\":\"local\"}''' BrowserInstance=> Browser
     ON ERROR REPEAT 1 TIMES WAIT 2
     END
     # Use 'City' variable instead hard code
