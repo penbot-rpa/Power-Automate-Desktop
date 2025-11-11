@@ -13,6 +13,7 @@ Display.ShowMessageDialog.ShowMessage Title: $'''Check''' Message: $'''Dropdown 
 # Click link and press arrow down 2 times and enter
 WebAutomation.Click.Click BrowserInstance: Browser Control: appmask['Web Page \'h ... down-menu/\'']['Select \'Afghanistan\''] ClickType: WebAutomation.ClickType.LeftClick MouseClick: True WaitForPageToLoadTimeout: 60 MousePositionRelativeToElement: WebAutomation.RectangleEdgePoint.MiddleCenter OffsetX: 0 OffsetY: 0
 MouseAndKeyboard.SendKeys.FocusAndSendKeys TextToSend: $'''{Down:2}{Enter}''' DelayBetweenKeystrokes: 10 SendTextAsHardwareKeys: False
+Display.ShowMessageDialog.ShowMessage Title: $'''Check''' Message: $'''Arrown down 2 times + enter''' Icon: Display.Icon.None Buttons: Display.Buttons.OK DefaultButton: Display.DefaultButton.Button1 IsTopMost: True
 
 # [ControlRepository][PowerAutomateDesktop]
 
