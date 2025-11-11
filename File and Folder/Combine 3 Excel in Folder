@@ -1,0 +1,25 @@
+DateTime.GetCurrentDateTime.Local DateTimeFormat: DateTime.DateTimeFormat.DateAndTime CurrentDateTime=> CurrentDateTime
+# Format yyyy_MM_dd
+Text.ConvertDateTimeToText.FromCustomDateTime DateTime: CurrentDateTime CustomFormat: $'''yyyy_MM_dd''' Result=> FormattedDateTime
+Folder.GetSpecialFolder SpecialFolder: Folder.SpecialFolder.DesktopDirectory SpecialFolderPath=> SpecialFolderPath
+Display.SelectFolder Description: $'''Select folder date''' IsTopMost: False SelectedFolder=> SelectedFolder ButtonPressed=> ButtonPressed
+Folder.GetFiles Folder: SelectedFolder FileFilter: $'''*.csv''' IncludeSubfolders: False FailOnAccessDenied: True SortBy1: Folder.SortBy.Name SortDescending1: False SortBy2: Folder.SortBy.NoSort SortDescending2: False SortBy3: Folder.SortBy.NoSort SortDescending3: False Files=> Files
+Excel.LaunchExcel.LaunchUnderExistingProcess Visible: True UseMachineLocale: False Instance=> ExcelInstance
+LOOP FOREACH CurrentItem IN Files
+    Display.ShowMessageDialog.ShowMessage Title: $'''Excel File''' Message: CurrentItem.FullName Icon: Display.Icon.None Buttons: Display.Buttons.OK DefaultButton: Display.DefaultButton.Button1 IsTopMost: False
+    Excel.LaunchExcel.LaunchAndOpenUnderExistingProcess Path: CurrentItem.FullName Visible: True ReadOnly: False UseMachineLocale: False Instance=> ExcelInstance2
+    Excel.GetFirstFreeColumnRow Instance: ExcelInstance2 FirstFreeRow=> FirstFreeRow
+    DISABLE Display.ShowMessageDialog.ShowMessage Title: $'''First Free Row''' Message: FirstFreeRow Icon: Display.Icon.None Buttons: Display.Buttons.OK DefaultButton: Display.DefaultButton.Button1 IsTopMost: False
+    IF Contains(CurrentItem.FullName, $'''(1)''', False) THEN
+        # Copy เฉพาะส่วน format
+        Excel.CopyCellsFromExcel.CopyCells Instance: ExcelInstance2 StartColumn: $'''A''' StartRow: 1 EndColumn: $'''C''' EndRow: FirstFreeRow - 1
+        Excel.PasteCellsToExcel.PasteAt Instance: ExcelInstance Column: $'''A''' Row: 1
+    END
+    # Copy ส่วนข้อมูลของไฟล์แต่ละไฟล์
+    Excel.CopyCellsFromExcel.CopyCells Instance: ExcelInstance2 StartColumn: $'''D''' StartRow: 1 EndColumn: $'''K''' EndRow: FirstFreeRow - 1
+    # หา Column ว่างในไฟล์เปล่าที่เพิ่งสร้างไว้สำหรับรวม 3 ไฟล์
+    Excel.GetFirstFreeColumnRow Instance: ExcelInstance FirstFreeColumn=> FirstFreeColumn
+    Excel.PasteCellsToExcel.PasteAt Instance: ExcelInstance Column: FirstFreeColumn Row: 1
+    Excel.CloseExcel.Close Instance: ExcelInstance2
+END
+Excel.CloseExcel.CloseAndSaveAs Instance: ExcelInstance DocumentFormat: Excel.ExcelFormat.OpenXmlWorkbook DocumentPath: $'''%SpecialFolderPath%\\Combine Excel\\Combine_%FormattedDateTime%.xlsx'''
