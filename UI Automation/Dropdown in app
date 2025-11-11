@@ -1,10 +1,11 @@
 # Please change application path of Contoso Invoicing before run
+# https://github.com/penbot-rpa/Power-Automate-Desktop/blob/3ffc432b9932fe95295443a9a639db0f51ae2681/UI%20Automation/Dropdown%20in%20app
 System.RunApplication.RunApplication ApplicationPath: $'''C:\\Users\\Public\\Desktop\\Contoso Invoicing.lnk''' WindowStyle: System.ProcessWindowStyle.Normal ProcessId=> AppProcessId
 UIAutomation.Click.Click Element: appmask['Window \'Contoso Invoicing\'']['Text \'Invoices\''] ClickType: UIAutomation.ClickType.DoubleClick MousePositionRelativeToElement: UIAutomation.RectangleEdgePoint.MiddleCenter OffsetX: 0 OffsetY: 0
 # Set drop-down by name
 UIAutomation.SetDropDownListValueInWindow.SetDropDownListValueByName DropDownList: appmask['Window \'Contoso Invoicing\'']['Combo Box \'ComboBox\''] OptionsNames: $'''Paid''' UseRegularExpressions: False
 Display.ShowMessageDialog.ShowMessage Title: $'''Check''' Message: $'''Dropdown by name = Paid''' Icon: Display.Icon.None Buttons: Display.Buttons.OK DefaultButton: Display.DefaultButton.Button1 IsTopMost: True
-# Set drop-down by name
+# Set drop-down by index
 UIAutomation.SetDropDownListValueInWindow.SetDropDownListValueByIndex DropDownList: appmask['Window \'Contoso Invoicing\'']['Combo Box \'ComboBox\''] OptionsIndeces: 1
 Display.ShowMessageDialog.ShowMessage Title: $'''Check''' Message: $'''Dropdown by index = 1''' Icon: Display.Icon.None Buttons: Display.Buttons.OK DefaultButton: Display.DefaultButton.Button1 IsTopMost: True
 UIAutomation.SetDropDownListValueInWindow.SetDropDownListValueByIndex DropDownList: appmask['Window \'Contoso Invoicing\'']['Combo Box \'ComboBox\''] OptionsIndeces: 3
