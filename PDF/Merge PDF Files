@@ -1,0 +1,4 @@
+Folder.GetSpecialFolder SpecialFolder: Folder.SpecialFolder.DesktopDirectory SpecialFolderPath=> SpecialFolderPath
+Display.SelectFileDialog.SelectFile Title: $'''Select File 1''' IsTopMost: False CheckIfFileExists: False SelectedFile=> SelectedFile1 ButtonPressed=> ButtonPressed1
+Display.SelectFileDialog.SelectFile Title: $'''Select File 2''' IsTopMost: False CheckIfFileExists: False SelectedFile=> SelectedFile2 ButtonPressed=> ButtonPressed2
+Pdf.MergeFiles PDFFiles: $'''\"%SelectedFile1%\",\"%SelectedFile2%\"''' MergedPDFPath: $'''%SpecialFolderPath%\\Merge PDF\\MergedResult.pdf''' IfFileExists: Pdf.IfFileExists.AddSequentialSuffix PasswordDelimiter: $''',''' MergedPDF=> MergedPDF
