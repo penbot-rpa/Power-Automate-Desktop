@@ -1,0 +1,12 @@
+Folder.GetSpecialFolder SpecialFolder: Folder.SpecialFolder.DesktopDirectory SpecialFolderPath=> SpecialFolderPath
+DateTime.GetCurrentDateTime.Local DateTimeFormat: DateTime.DateTimeFormat.DateAndTime CurrentDateTime=> CurrentDateTime
+Text.ConvertDateTimeToText.FromCustomDateTime DateTime: CurrentDateTime CustomFormat: $'''yyyy-MM-dd''' Result=> FormattedDateTime
+WebAutomation.LaunchChrome.LaunchChrome Url: $'''https://www.bangchak.co.th/th/oilprice/historical''' WindowState: WebAutomation.BrowserWindowState.Maximized ClearCache: False ClearCookies: False WaitForPageToLoadTimeout: 60 Timeout: 60 PiPUserDataFolderMode: WebAutomation.PiPUserDataFolderModeEnum.AutomaticProfile TargetDesktop: $'''{\"DisplayName\":\"Local computer\",\"Route\":{\"ServerType\":\"Local\",\"ServerAddress\":\"\"},\"DesktopType\":\"local\"}''' BrowserInstance=> Browser
+WebAutomation.ExtractData.ExtractHtmlTable BrowserInstance: Browser Control: $'''html > body > div:eq(0) > div > main > section:eq(1) > div > div > div > div > table''' ExtractionParameters: {[$'''วันที่''', $'''บาท/ลิตร''', $'''บาท/ลิตร #1''', $'''บาท/ลิตร #2''', $'''บาท/ลิตร #3''', $'''บาท/ลิตร #4''', $'''บาท/ลิตร #5''', $'''บาท/ลิตร #6''', $'''บาท/ลิตร #7'''], [$'''''', $'''''', $'''''', $'''''', $'''''', $'''''', $'''''', $'''''', $''''''] } PostProcessData: False TimeoutInSeconds: 60 ExtractedData=> DataFromWebPage
+Variables.DeleteRowFromDataTable DataTable: DataFromWebPage RowIndex: 0
+SET TableHeader TO ['Date', 'Hi Premium Diesel', 'Hi Diesel', 'Hi Diesel B20', 'Hi Premium 97 Gasohol 95', 'Gasohol E85 S EVO', 'Gasohol E20 S EVO', 'Gasohol 91 S EVO', 'Gasohol 95 S EVO']
+Variables.AddRowToDataTable.InsertItemToDataTable DataTable: DataFromWebPage RowIndex: 0 RowToAdd: TableHeader
+Excel.LaunchExcel.LaunchUnderExistingProcess Visible: True UseMachineLocale: False Instance=> ExcelInstance
+Excel.WriteToExcel.WriteCell Instance: ExcelInstance Value: DataFromWebPage Column: $'''A''' Row: 1
+Excel.CloseExcel.CloseAndSaveAs Instance: ExcelInstance DocumentFormat: Excel.ExcelFormat.FromExtension DocumentPath: $'''%SpecialFolderPath%\\oil_price_bangchak_pad_%FormattedDateTime%'''
+WebAutomation.CloseWebBrowser BrowserInstance: Browser
