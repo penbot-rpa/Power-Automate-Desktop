@@ -1,0 +1,27 @@
+Folder.GetSpecialFolder SpecialFolder: Folder.SpecialFolder.DesktopDirectory SpecialFolderPath=> SpecialFolderPath
+# เปิด MyFile
+Excel.LaunchExcel.LaunchAndOpenUnderExistingProcess Path: $'''%SpecialFolderPath%\\MyFile.xlsx''' Visible: True ReadOnly: False UseMachineLocale: False Instance=> ExcelInstanceMyFile
+# เปิด Export Excel
+Folder.GetFiles Folder: $'''%SpecialFolderPath%\\Download Excel''' FileFilter: $'''*.xlsx''' IncludeSubfolders: False FailOnAccessDenied: True SortBy1: Folder.SortBy.CreationTime SortDescending1: True SortBy2: Folder.SortBy.NoSort SortDescending2: False SortBy3: Folder.SortBy.NoSort SortDescending3: False Files=> Files
+Display.ShowMessageDialog.ShowMessage Title: $'''Latest File''' Message: Files[0] Icon: Display.Icon.None Buttons: Display.Buttons.OK DefaultButton: Display.DefaultButton.Button1 IsTopMost: False
+Excel.LaunchExcel.LaunchAndOpenUnderExistingProcess Path: Files[0] Visible: True ReadOnly: False UseMachineLocale: False Instance=> ExcelInstanceExcelExport
+# อ่านข้อมูล A1 MyFile เคยมีข้อมูลมาวางบ้างหรือยัง (โอกาสเกิด 2 แบบ คือ ไม่เคยมีข้อมูล, มีข้อมูลบ้างแล้ว)
+Excel.ReadFromExcel.ReadCell Instance: ExcelInstanceMyFile StartColumn: $'''A''' StartRow: 1 GetCellContentsMode: Excel.GetCellContentsMode.TypedValues CellValue=> A1_MyFile
+IF IsEmpty(A1_MyFile) THEN
+    # A1 MyFile ว่าง ให้อ่านค่าทั้งหมดที่ Excel Export
+    Excel.GetFirstFreeColumnRow Instance: ExcelInstanceExcelExport FirstFreeColumn=> FirstFreeColumnExcelExport FirstFreeRow=> FirstFreeRowExcelExport
+    Excel.ReadFromExcel.ReadCells Instance: ExcelInstanceExcelExport StartColumn: $'''A''' StartRow: 1 EndColumn: FirstFreeColumnExcelExport - 1 EndRow: FirstFreeRowExcelExport - 1 GetCellContentsMode: Excel.GetCellContentsMode.TypedValues FirstLineIsHeader: False RangeValue=> ExcelDataExport
+ELSE IF IsNotEmpty(A1_MyFile) THEN
+    # A1 MyFile ไม่ใช่ค่าว่าง ให้อ่านค่าตั้งแต่บรรทัดใหม่ที่ Excel Export
+    Excel.GetFirstFreeColumnRow Instance: ExcelInstanceMyFile FirstFreeColumn=> FirstFreeColumnMyFile FirstFreeRow=> FirstFreeRowMyFile
+    Excel.GetFirstFreeColumnRow Instance: ExcelInstanceExcelExport FirstFreeColumn=> FirstFreeColumnExcelExport FirstFreeRow=> FirstFreeRowExcelExport
+    Excel.ReadFromExcel.ReadCells Instance: ExcelInstanceExcelExport StartColumn: $'''A''' StartRow: FirstFreeRowMyFile EndColumn: FirstFreeColumnExcelExport - 1 EndRow: FirstFreeRowExcelExport - 1 GetCellContentsMode: Excel.GetCellContentsMode.TypedValues FirstLineIsHeader: False RangeValue=> ExcelDataExport
+END
+# ไปเขียนที่ MyFile
+IF FirstFreeRowMyFile = 0 THEN
+    Excel.WriteToExcel.WriteCell Instance: ExcelInstanceMyFile Value: ExcelDataExport Column: $'''A''' Row: 1
+ELSE IF FirstFreeRowMyFile > 0 THEN
+    Excel.WriteToExcel.WriteCell Instance: ExcelInstanceMyFile Value: ExcelDataExport Column: $'''A''' Row: FirstFreeRowMyFile
+END
+Excel.CloseExcel.CloseAndSave Instance: ExcelInstanceMyFile
+Excel.CloseExcel.Close Instance: ExcelInstanceExcelExport
